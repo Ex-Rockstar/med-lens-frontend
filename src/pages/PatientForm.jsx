@@ -1,62 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import axios from "axios";
 
 function PatientForm() {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    age: '',
-    gender: '',
-    contactNumber: '',
-    email: '',
-    symptoms: '',
-    symptomDuration: '',
-    selfTreatment: '',
-    otherMedicalConditions: '',
-    otherMedicinesTaken: '',
-    recentExposure: '',
-    skinChanges: '',
-    familyHistory: '',
-    triggers: ''
-  });
+
+  const initialFormData = {
+    firstName: "",
+    lastName: "",
+    age: "",
+    gender: "",
+    contactNumber: "",
+    email: "",
+    symptoms: "",
+    symptomDuration: "",
+    selfTreatment: "",
+    otherMedicalConditions: "",
+    otherMedicinesTaken: "",
+    recentExposure: "",
+    skinChanges: "",
+    familyHistory: "",
+    triggers: "",
+  };
+
+  // State for form data
+  const [formData, setFormData] = useState(initialFormData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log('handleChange', name, value); 
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
-  const handleSubmit = (e) => {
-    // e.preventDefault();
-    console.log('Form submitted');
-    // Print formData as JSON in console
-    console.log(JSON.stringify(formData, null, 2));
-    // Clear the form after submission
-    setFormData({
-      firstName: '',
-      lastName: '',
-      age: '',
-      gender: '',
-      contactNumber: '',
-      email: '',
-      symptoms: '',
-      symptomDuration: '',
-      selfTreatment: '',
-      otherMedicalConditions: '',
-      otherMedicinesTaken: '',
-      recentExposure: '',
-      skinChanges: '',
-      familyHistory: '',
-      triggers: ''
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/patient",
+        JSON.stringify(formData), // Convert formData to JSON
+        { headers: { "Content-Type": "application/json" } } // Set content type header
+      );
+      console.log("Server response:", response.data);
+      setFormData(initialFormData); // Reset form data
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
-
+  
 
   return (
     <div className="bg-yellow-200 p-8 rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">MedLens Patient Information Form</h2>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <h2 className="text-2xl font-bold mb-4">
+        MedLens Patient Information Form
+      </h2>
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
         <label className="block mb-4">
           First Name:
           <input
@@ -65,6 +65,7 @@ function PatientForm() {
             value={formData.firstName}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -75,6 +76,7 @@ function PatientForm() {
             value={formData.lastName}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -85,11 +87,17 @@ function PatientForm() {
             value={formData.age}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
           Gender:
-          <select name="gender" value={formData.gender} onChange={handleChange} className="border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1 bg-yellow-50">
+          <select
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+            className="border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1 bg-yellow-50"
+          >
             <option value="">Select</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -104,6 +112,7 @@ function PatientForm() {
             value={formData.contactNumber}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -114,6 +123,7 @@ function PatientForm() {
             value={formData.email}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -123,6 +133,7 @@ function PatientForm() {
             value={formData.symptoms}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -133,6 +144,7 @@ function PatientForm() {
             value={formData.symptomDuration}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -143,6 +155,7 @@ function PatientForm() {
             value={formData.selfTreatment}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -152,6 +165,7 @@ function PatientForm() {
             value={formData.otherMedicalConditions}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -161,15 +175,18 @@ function PatientForm() {
             value={formData.otherMedicinesTaken}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
-          Recent Exposure to Skincare Products, Chemicals, or Environmental Factors:
+          Recent Exposure to Skincare Products, Chemicals, or Environmental
+          Factors:
           <textarea
             name="recentExposure"
             value={formData.recentExposure}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -179,6 +196,7 @@ function PatientForm() {
             value={formData.skinChanges}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -188,6 +206,7 @@ function PatientForm() {
             value={formData.familyHistory}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <label className="block mb-4">
@@ -197,10 +216,16 @@ function PatientForm() {
             value={formData.triggers}
             onChange={handleChange}
             className="bg-yellow-50 border-yellow-400 border-solid border-2 rounded-md p-2 w-full mt-1"
+            required
           />
         </label>
         <div className="flex justify-center">
-          <button type="submit" className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600">Submit</button>
+          <button
+            type="submit"
+            className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600"
+          >
+            Submit
+          </button>
         </div>
       </form>
     </div>
